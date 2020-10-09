@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="/akv-static/bootstrap.min.css">
+  <script src="https://unpkg.com/vue"></script>
+  <title>Crime Trends</title>
+</head>
+
+<body>
+  <div id="app">
+    <nav class="navbar navbar-dark bg-dark">
+      <span class="navbar-brand mb-0 h1">{{ title }}</span>
+    </nav>
+
+    <div class="container-fluid">
+      <!-- Color boxes -->
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Total Crime ( 1 year )</h5>
+              <p v-if="responses.TotalCrimeCountForlast1year">
+                Count: {{ responses.TotalCrimeCountForlast1year[0].count }}
+              </p>
+              <h5 class="card-title">Top District</h5>
+              <p v-if="responses.TopCrimeDistrictforlastoneyear">
+                Count: {{ responses.TopCrimeDistrictforlastoneyear[0].count }},
+                Occur District: {{ responses.TopCrimeDistrictforlastoneyear[0].occur_district }}<br>
+                District Name: {{ responses.TopCrimeDistrictforlastoneyear[0].district_name }}<br>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Total Crime ( last 3 months )</h5>
+              <p v-if="responses.LastthreemonthstotalCrime">
+                Count: {{ responses.LastthreemonthstotalCrime[0].count }}
+              </p>
+              <h5 class="card-title">Top District</h5>
+              <p v-if="responses.LastthreemonthstopCrimeDistricts">
+                Count: {{ responses.LastthreemonthstopCrimeDistricts[0].count }}<br>
+                District Name: {{ responses.LastthreemonthstopCrimeDistricts[0].district_name }}<br>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Place of Crime</h5>
+              <p v-if="responses.PlaceofCrime">
+              <div v-for="ele in responses.PlaceofCrime" style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                Count: {{ele.count}},
+                Place Type Maj: {{ele.place_type_maj}},
+                Value: {{ele.value}}
+              </div>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Male Accused</h5>
+              <p v-if="responses.Maleaccusedcountlast2years">
+              <div v-for="ele in responses.Maleaccusedcountlast2years"
+                style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                Count: {{ele.count}},
+                Year: {{ele.year}}
+              </div>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Female Victim</h5>
+              <p v-if="responses.FemaleVictimCountforlast2year">
+              <div v-for="ele in responses.FemaleVictimCountforlast2year"
+                style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                Count: {{ele.count}},
+                Year: {{ele.year}}
+              </div>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Uder 18 Accused</h5>
+              <p v-if="responses.CrimeinVillageCountforlast2year">
+              <div v-for="ele in responses.CrimeinVillageCountforlast2year"
+                style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                Count: {{ele.count}},
+                Year: {{ele.year}}
+              </div>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Color boxes end -->
+
+      <h4>Section 1</h4>
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+            <div class="form-row card-body">
+              <div class="col">
+                <label for="">From:</label>
+                <input type="date" class="form-control">
+              </div>
+              <div class="col">
+                <label for="">To</label>
+                <input type="date" class="form-control">
+              </div>
+              <div class="col">
+                <label for="">District:</label>
+                <select v-model="selected.district" @change="onDistrictChange($event)" class="form-control">
+                  <option v-for="ele in responses.DistrictNameList" v-bind:value="ele.districtname">
+                    {{ele.districtname}}({{ele.code}})</option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="">Police Station</label>
+                <select :disabled="responses.PoliceStation==null" v-model="selected.policeStation" @change="onPoliceStationChange($event)" class="form-control">
+                  <option v-for="ele in responses.PoliceStation" v-bind:value="ele.name">
+                    {{ele.name}}({{ele.code}})</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Section 2</h4>
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+            <div class="form-row card-body">
+              <div class="col">
+                <label for="">Case Type:</label>
+                <select v-model="selected.caseType" @change="onCasetypeChange($event)" class="form-control">
+                  <option v-for="ele in responses.casetype" v-bind:value="ele.caseType">
+                    {{ele.caseType}}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="selected">Sub Case Type:</label>
+                <select :disabled="responses.subCaseTypeforcaseType==null" v-model="selected.subCaseType" class="form-control">
+                  <option v-for="ele in responses.subCaseTypeforcaseType" v-bind:value="ele.subCaseType">
+                    {{ele.subCaseType}}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="">Act Name: </label>
+                <select v-model="selected.actCode" class="form-control">
+                  <option v-for="ele in responses.ActCode" v-bind:value="ele.actcode">
+                    {{ele.actcode}}: {{ele.act_shortdesc}}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="">Section of Law: </label>
+                <select v-model="selected.actSection" class="form-control">
+                  <option v-for="ele in responses.ActSection" v-bind:value="ele.sec_code">
+                    {{ele.sec_code}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Section 3</h4>
+      <div class="row">
+        <div class="col-sm">
+          <div class="card">
+            <div class="form-row card-body">
+              <div class="col">
+                <label for="">Place Type Major:</label>
+                <select v-model="selected.placeTypeMajor" @change="onPlaceTypeMajorChange($event)" class="form-control">
+                  <option v-for="ele in responses.placeTypeMajor" v-bind:value="ele.value">
+                    {{ele.place_id}}: {{ele.value}}
+                  </option>
+                </select>
+              </div>
+              <div class="col">
+                <label for="">Place Type Minor:</label>
+                <select :disabled="responses.placeTypeMinor==null" v-model="selected.placeTypeMinor" class="form-control">
+                  <option v-for="ele in responses.placeTypeMinor" v-bind:value="ele.value">
+                    {{ele.place_id}}: {{ele.value}}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h4>Advaned Filters</h4>
+      <div class="row">
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Details</h5>
+              <label for="">Physical Build:</label>
+              <select v-model="selected.physicalBuild" class="form-control">
+                <option v-for="ele in responses.AccusedAttributePhysicalBuild" v-bind:value="ele.name">
+                  {{ele.code}}: {{ele.name}}
+                </option>
+              </select>
+              <label for="">Physical Complexion:</label>
+              <select v-model="selected.physicalComplexion" class="form-control">
+                <option v-for="ele in responses.AccusedAttributePhysicalComplexion" v-bind:value="ele.name">
+                  {{ ele.code }}: {{ ele.name }}
+                </option>
+              </select>
+              <label for="">MO Class:</label>
+              <select v-model="selected.moAttributeClass" class="form-control">
+                <option v-for="ele in responses.MOAttributeClass" v-bind:value="ele.districtzone">
+                  {{ ele.districtzone }}
+                </option>
+              </select>
+              <label for="">MO Sub Class:</label>
+              <select v-model="selected.moAttributeSubClass" class="form-control">
+                <option v-for="ele in responses.MOAttributeSubClass" v-bind:value="ele.districtzone">
+                  {{ ele.districtzone }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Targeted property</h5>
+              <label for="">Vehicle:</label>
+              <select v-model="selected.VictimPropVehicle" class="form-control">
+                <option v-for="ele in responses.VictimPropVehicle" v-bind:value="ele.property_value">
+                  {{ele.property_type}}: {{ele.property_value}}
+                </option>
+              </select>
+              <label for="">Asset:</label>
+              <select v-model="selected.VictimPropAsset" class="form-control">
+                <option v-for="ele in responses.VictimPropAsset" v-bind:value="ele.property_value">
+                  {{ele.property_type}}: {{ele.property_value}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Property Used in Crime</h5>
+              <label for="">Vehicle:</label>
+              <select v-model="selected.PropInvInCrimeVehicle" class="form-control">
+                <option v-for="ele in responses.PropInvInCrimeVehicle" v-bind:value="ele.property_value">
+                  {{ele.property_type}}: {{ele.property_value}}
+                </option>
+              </select>
+              <label for="">Weapon:</label>
+              <select v-model="selected.PropInvInCrimeWeapon" class="form-control">
+                <option v-for="ele in responses.PropInvInCrimeWeapon" v-bind:value="ele.property_value">
+                  {{ele.property_type}}: {{ele.property_value}}
+                </option>
+              </select>
+              <label for="">Gadget:</label>
+              <select v-model="selected.PropInvInCrimeGadget" class="form-control">
+                <option v-for="ele in responses.PropInvInCrimeGadget" v-bind:value="ele.property_value">
+                  {{ele.property_type}}: {{ele.property_value}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+  <script src="/akv-static/jquery-3.2.1.min.js"></script>
+  <script src="/akv-static/popper.min.js"></script>
+  <script src="/akv-static/bootstrap.min.js"></script>
+  <script src="/akv-static/axios.min.js"></script>
+
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        title: 'Crime Trends',
+        responses: {
+          TotalCrimeCountForlast1year: null,
+          TopCrimeDistrictforlastoneyear: null,
+          LastthreemonthstotalCrime: null,
+          LastthreemonthstopCrimeDistricts: null,
+          PlaceofCrime: null,
+          Maleaccusedcountlast2years: null,
+          FemaleVictimCountforlast2year: null,
+          CrimeinVillageCountforlast2year: null,
+          DistrictNameList: null,
+          PoliceStation: null,
+          casetype: null,
+          subCaseTypeforcaseType: null,
+          ActCode: null,
+          ActSection: null,
+          placeTypeMajor: null,
+          placeTypeMinor: null,
+          AccusedAttributePhysicalBuild: null,
+          AccusedAttributePhysicalComplexion: null,
+          MOAttributeClass: null,
+          MOAttributeSubClass: null,
+          VictimPropVehicle: null,
+          VictimPropAsset: null,
+          PropInvInCrimeVehicle: null,
+          PropInvInCrimeWeapon: null,
+          PropInvInCrimeGadget: null,
+        },
+        selected: {
+          district: null,
+          policeStation: null,
+          caseType: null,
+          subCaseType: null,
+          actCode: null,
+          actSection: null,
+          placeTypeMajor: null,
+          physicalBuild: null,
+          physicalComplexion: null,
+          moAttributeClass: null,
+          moAttributeSubClass: null,
+          VictimPropVehicle: null,
+          VictimPropAsset: null,
+          PropInvInCrimeVehicle: null,
+          PropInvInCrimeWeapon: null,
+          PropInvInCrimeGadget: null,
+
+        }
+      },
+      methods: {
+
+        initialize: function () {
+
+          axios.get("/apis/TotalCrimeCountForlast1year").then((response) => {
+            console.log('TotalCrimeCountForlast1year: ', response.data)
+            this.responses.TotalCrimeCountForlast1year = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/TopCrimeDistrictforlastoneyear").then((response) => {
+            console.log('TopCrimeDistrictforlastoneyear: ', response.data)
+            this.responses.TopCrimeDistrictforlastoneyear = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/LastthreemonthstotalCrime").then((response) => {
+            console.log('LastthreemonthstotalCrime: ', response.data)
+            this.responses.LastthreemonthstotalCrime = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/LastthreemonthstopCrimeDistricts").then((response) => {
+            console.log('LastthreemonthstopCrimeDistricts: ', response.data)
+            this.responses.LastthreemonthstopCrimeDistricts = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/PlaceofCrime").then((response) => {
+            console.log('PlaceofCrime: ', response.data)
+            this.responses.PlaceofCrime = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/Maleaccusedcountlast2years").then((response) => {
+            console.log('Maleaccusedcountlast2years: ', response.data)
+            this.responses.Maleaccusedcountlast2years = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/FemaleVictimCountforlast2year").then((response) => {
+            console.log('FemaleVictimCountforlast2year: ', response.data)
+            this.responses.FemaleVictimCountforlast2year = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/CrimeinVillageCountforlast2year").then((response) => {
+            console.log('CrimeinVillageCountforlast2year: ', response.data)
+            this.responses.CrimeinVillageCountforlast2year = response.data
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/DistrictNameList").then((response) => {
+
+            console.log('DistrictNameList: ', response.data)
+
+            this.responses.DistrictNameList = response.data
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/casetype").then((response) => {
+
+            console.log('casetype: ', response.data)
+
+            this.responses.casetype = response.data
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/ActCode").then((response) => {
+
+            console.log('ActCode: ', response.data)
+
+            this.responses.ActCode = response.data
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/ActSection").then((response) => {
+
+            console.log('ActSection: ', response.data)
+
+            this.responses.ActSection = response.data
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/placeTypeMajor").then((response) => {
+
+            console.log('placeTypeMajor: ', response.data)
+
+            this.responses.placeTypeMajor = response.data
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/AccusedAttributePhysicalBuild").then((response) => {
+
+            console.log('AccusedAttributePhysicalBuild: ', response.data);
+
+            this.responses.AccusedAttributePhysicalBuild = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/AccusedAttributePhysicalComplexion").then((response) => {
+
+            console.log('AccusedAttributePhysicalComplexion: ', response.data);
+
+            this.responses.AccusedAttributePhysicalComplexion = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/MOAttributeClass").then((response) => {
+
+            console.log('MOAttributeClass: ', response.data);
+
+            this.responses.MOAttributeClass = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/MOAttributeSubClass").then((response) => {
+
+            console.log('MOAttributeSubClass: ', response.data);
+
+            this.responses.MOAttributeSubClass = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/VictimPropVehicle").then((response) => {
+
+            console.log('VictimPropVehicle: ', response.data);
+
+            this.responses.VictimPropVehicle = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/VictimPropAsset").then((response) => {
+
+            console.log('VictimPropAsset: ', response.data);
+
+            this.responses.VictimPropAsset = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/PropInvInCrimeVehicle").then((response) => {
+
+            console.log('PropInvInCrimeVehicle: ', response.data);
+
+            this.responses.PropInvInCrimeVehicle = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/PropInvInCrimeWeapon").then((response) => {
+
+            console.log('PropInvInCrimeWeapon: ', response.data);
+
+            this.responses.PropInvInCrimeWeapon = response.data;
+
+          }).catch((error) => console.log(error))
+
+          axios.get("/apis/PropInvInCrimeGadget").then((response) => {
+
+            console.log('PropInvInCrimeGadget: ', response.data);
+
+            this.responses.PropInvInCrimeGadget = response.data;
+
+          }).catch((error) => console.log(error))
+        },
+        onDistrictChange: function (e) {
+
+          console.log(e.target.value)
+
+          this.loadPoliceStations(e.target.value)
+        },
+        loadPoliceStations: function (district) {
+
+          axios.get("/apis/PoliceStation", { params: { district: this.selected.district } }).then(response => {
+
+            console.log(response.data)
+
+            this.responses.PoliceStation = response.data
+
+          }).catch(error => console.log(error))
+        },
+
+        onPoliceStationChange: function (e) {
+
+          console.log(e.target.value)
+        },
+        onCasetypeChange: function (e) {
+
+          console.log(e.target.value)
+
+          this.loadSubCaseTypes(e.target.value)
+        },
+        loadSubCaseTypes: function (caseType) {
+
+          axios.get("/apis/subCaseTypeforcaseType", { params: { caseType: caseType } }).then((response) => {
+
+            this.responses.subCaseTypeforcaseType = response.data
+
+          }).catch(error => console.log(error))
+
+        },
+        onPlaceTypeMajorChange: function (e) {
+
+          console.log(e.target.value)
+
+          this.loadPlaceTypeMinor(e.target.value);
+        },
+        loadPlaceTypeMinor: function (placetypemajor) {
+
+          axios.get("/apis/placeTypeMinor", { params: { placetypemajor: placetypemajor } }).then((response) => {
+
+            this.responses.placeTypeMinor = response.data
+
+          }).catch(error => console.log(error))
+
+        }
+      },
+      beforeMount: function () {
+
+        this.initialize ()
+      }
+    })
+  </script>
+
+  <script>
+
+  </script>
+</body>
+
+</html>
