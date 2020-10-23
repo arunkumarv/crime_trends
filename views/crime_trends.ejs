@@ -118,22 +118,23 @@
             <div class="form-row card-body">
               <div class="col">
                 <label for="">From:</label>
-                <input type="date" class="form-control">
+                <input v-model="selected.fromDate" type="date" class="form-control">
               </div>
               <div class="col">
                 <label for="">To</label>
-                <input type="date" class="form-control">
+                <input v-model="selected.toDate" type="date" class="form-control">
               </div>
               <div class="col">
                 <label for="">District:</label>
-                <select v-model="selected.district" @change="onDistrictChange($event)" class="form-control">
+                <select v-model="selected.occurDistrict" @change="onDistrictChange($event)" class="form-control">
                   <option v-for="ele in responses.DistrictNameList" v-bind:value="ele.districtname">
                     {{ele.districtname}}({{ele.code}})</option>
                 </select>
               </div>
               <div class="col">
                 <label for="">Police Station</label>
-                <select :disabled="responses.PoliceStation==null" v-model="selected.policeStation" @change="onPoliceStationChange($event)" class="form-control">
+                <select :disabled="responses.PoliceStation==null" v-model="selected.occurPolicestation"
+                  @change="onPoliceStationChange($event)" class="form-control">
                   <option v-for="ele in responses.PoliceStation" v-bind:value="ele.name">
                     {{ele.name}}({{ele.code}})</option>
                 </select>
@@ -158,7 +159,8 @@
               </div>
               <div class="col">
                 <label for="selected">Sub Case Type:</label>
-                <select :disabled="responses.subCaseTypeforcaseType==null" v-model="selected.subCaseType" class="form-control">
+                <select :disabled="responses.subCaseTypeforcaseType==null" v-model="selected.caseSubtype"
+                  class="form-control">
                   <option v-for="ele in responses.subCaseTypeforcaseType" v-bind:value="ele.subCaseType">
                     {{ele.subCaseType}}
                   </option>
@@ -174,7 +176,7 @@
               </div>
               <div class="col">
                 <label for="">Section of Law: </label>
-                <select v-model="selected.actSection" class="form-control">
+                <select v-model="selected.secCode" class="form-control">
                   <option v-for="ele in responses.ActSection" v-bind:value="ele.sec_code">
                     {{ele.sec_code}}
                   </option>
@@ -192,7 +194,7 @@
             <div class="form-row card-body">
               <div class="col">
                 <label for="">Place Type Major:</label>
-                <select v-model="selected.placeTypeMajor" @change="onPlaceTypeMajorChange($event)" class="form-control">
+                <select v-model="selected.placeTypeMaj" @change="onPlaceTypeMajorChange($event)" class="form-control">
                   <option v-for="ele in responses.placeTypeMajor" v-bind:value="ele.value">
                     {{ele.place_id}}: {{ele.value}}
                   </option>
@@ -200,17 +202,29 @@
               </div>
               <div class="col">
                 <label for="">Place Type Minor:</label>
-                <select :disabled="responses.placeTypeMinor==null" v-model="selected.placeTypeMinor" class="form-control">
+                <select :disabled="responses.placeTypeMinor==null" v-model="selected.placeTypeMin" class="form-control">
                   <option v-for="ele in responses.placeTypeMinor" v-bind:value="ele.value">
                     {{ele.place_id}}: {{ele.value}}
                   </option>
                 </select>
+              </div>
+              <div class="col">
+                <label for="">&nbsp;</label>
+                <!-- :disabled="!(selected.fromDate && selected.toDate && selected.occurDistrict && selected.occurPolicestation)" -->
+                <button class="btn btn-secondary form-control" v-on:click="getGraphs">Graphs</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
+      <div class="row">
+        <div class="col">
+          <canvas id="chart-109" width="800" height="450"></canvas>
+        </div>
+      </div>
+
+      <!--
       <h4>Advaned Filters</h4>
       <div class="row">
         <div class="col">
@@ -289,6 +303,7 @@
           </div>
         </div>
       </div>
+    -->
     </div>
   </div>
 
@@ -297,12 +312,19 @@
   <script src="/akv-static/popper.min.js"></script>
   <script src="/akv-static/bootstrap.min.js"></script>
   <script src="/akv-static/axios.min.js"></script>
+  <script src="/akv-static/Chart.min.js"></script>
 
   <script>
+    let chart109 = null;
+
     var app = new Vue({
+
       el: '#app',
+
       data: {
+
         title: 'Crime Trends',
+
         responses: {
           TotalCrimeCountForlast1year: null,
           TopCrimeDistrictforlastoneyear: null,
@@ -330,14 +352,19 @@
           PropInvInCrimeWeapon: null,
           PropInvInCrimeGadget: null,
         },
+
         selected: {
-          district: null,
-          policeStation: null,
+          fromDate: null,
+          toDate: null,
+          occurDistrict: null,
+          occurPolicestation: null,
           caseType: null,
-          subCaseType: null,
+          caseSubtype: null,
           actCode: null,
-          actSection: null,
-          placeTypeMajor: null,
+          secCode: null,
+          placeTypeMaj: null,
+          placeTypeMin: null,
+
           physicalBuild: null,
           physicalComplexion: null,
           moAttributeClass: null,
@@ -506,15 +533,17 @@
 
           }).catch((error) => console.log(error))
         },
+
         onDistrictChange: function (e) {
 
           console.log(e.target.value)
 
           this.loadPoliceStations(e.target.value)
         },
+
         loadPoliceStations: function (district) {
 
-          axios.get("/apis/PoliceStation", { params: { district: this.selected.district } }).then(response => {
+          axios.get("/apis/PoliceStation", { params: { occurDistrict: this.selected.occurDistrict } }).then(response => {
 
             console.log(response.data)
 
@@ -527,12 +556,14 @@
 
           console.log(e.target.value)
         },
+
         onCasetypeChange: function (e) {
 
           console.log(e.target.value)
 
           this.loadSubCaseTypes(e.target.value)
         },
+
         loadSubCaseTypes: function (caseType) {
 
           axios.get("/apis/subCaseTypeforcaseType", { params: { caseType: caseType } }).then((response) => {
@@ -542,12 +573,14 @@
           }).catch(error => console.log(error))
 
         },
+
         onPlaceTypeMajorChange: function (e) {
 
           console.log(e.target.value)
 
           this.loadPlaceTypeMinor(e.target.value);
         },
+
         loadPlaceTypeMinor: function (placetypemajor) {
 
           axios.get("/apis/placeTypeMinor", { params: { placetypemajor: placetypemajor } }).then((response) => {
@@ -556,17 +589,110 @@
 
           }).catch(error => console.log(error))
 
+        },
+
+        getGraphs: function () {
+
+          console.log(this.selected)
+
+          let params = {
+
+            fromDate: this.selected.fromDate ? this.selected.fromDate : '%',
+
+            toDate: this.selected.toDate ? this.selected.toDate : '%',
+
+            occurDistrict: this.selected.occurDistrict ? this.selected.occurDistrict : '%',
+
+            occurPolicestation: this.selected.occurPolicestation ? this.selected.occurPolicestation : '%',
+
+            caseType: this.selected.caseType ? this.selected.caseType : '%',
+
+            caseSubtype: this.selected.caseSubtype ? this.selected.caseSubtype : '%',
+
+            actCode: this.selected.actCode ? this.selected.actCode : '%',
+
+            secCode: this.selected.secCode ? this.selected.secCode : '%',
+
+            placeTypeMaj: this.selected.placeTypeMaj ? this.selected.placeTypeMaj : '%',
+
+            placeTypeMin: this.selected.placeTypeMin ? this.selected.placeTypeMin : '%'
+          }
+
+          console.log(params)
+
+          axios.get("/apis/AccusedAndVictimAgeRange", { params: params }).then((response) => {
+
+            //console.log(response.data)
+
+          }).catch(error => console.log(error))
+
+          axios.get("/apis/Top5MajorPlaces", { params: params }).then((response) => {
+
+            //console.log(response.data)
+
+          }).catch(error => console.log(error))
+
+          axios.get("/apis/DaywiseCrimeCount", { params: params }).then((response) => {
+
+            console.log(response.data)
+
+            let labels = response.data.map ( ele => ele.days )
+
+            let data = response.data.map ( ele => ele.count )
+
+            if ( chart109 ) chart109.destroy();
+
+            chart109 = new Chart ( document.getElementById ( "chart-109" ), {
+              type: 'line',
+              data: {
+                labels: labels,
+                datasets: [{
+                  data: data,
+                  label: "Count",
+                  borderColor: "#3e95cd",
+                  fill: false
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Day wise crime count'
+                }
+              }
+            });
+
+          }).catch(error => console.log(error))
+
+          axios.get("/apis/DayTimewise", { params: params }).then((response) => {
+
+            //console.log(response.data)
+
+          }).catch(error => console.log(error))
+
+          axios.get("/apis/TopVehiclePropertyinCrime", { params: params }).then((response) => {
+
+            //console.log(response.data)
+
+          }).catch(error => console.log(error))
+
+          axios.get("/apis/TopPropertyinCrime", { params: params }).then((response) => {
+
+            //console.log(response.data)
+
+          }).catch(error => console.log(error))
+
+          axios.get("/apis/TopTargetedPropertyInCrime", { params: params }).then((response) => {
+
+            //console.log(response.data)
+
+          }).catch(error => console.log(error))
         }
       },
       beforeMount: function () {
 
-        this.initialize ()
+        this.initialize()
       }
     })
-  </script>
-
-  <script>
-
   </script>
 </body>
 
