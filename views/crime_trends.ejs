@@ -19,7 +19,7 @@
       <!-- Color boxes -->
       <div class="row">
         <div class="col-sm">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-body">
               <h5 class="card-title">Total Crime ( 1 year )</h5>
               <p v-if="responses.TotalCrimeCountForlast1year">
@@ -35,7 +35,7 @@
           </div>
         </div>
         <div class="col-sm">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-body">
               <h5 class="card-title">Total Crime ( last 3 months )</h5>
               <p v-if="responses.LastthreemonthstotalCrime">
@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="col-sm">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-body">
               <h5 class="card-title">Place of Crime</h5>
               <p v-if="responses.PlaceofCrime">
@@ -67,7 +67,7 @@
 
       <div class="row">
         <div class="col-sm">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-body">
               <h5 class="card-title">Male Accused</h5>
               <p v-if="responses.Maleaccusedcountlast2years">
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="col-sm">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-body">
               <h5 class="card-title">Female Victim</h5>
               <p v-if="responses.FemaleVictimCountforlast2year">
@@ -95,7 +95,7 @@
           </div>
         </div>
         <div class="col-sm">
-          <div class="card">
+          <div class="card mb-3">
             <div class="card-body">
               <h5 class="card-title">Uder 18 Accused</h5>
               <p v-if="responses.CrimeinVillageCountforlast2year">
@@ -111,199 +111,396 @@
       </div>
       <!-- Color boxes end -->
 
-      <h4>Section 1</h4>
       <div class="row">
-        <div class="col-sm">
-          <div class="card">
-            <div class="form-row card-body">
-              <div class="col">
-                <label for="">From:</label>
-                <input v-model="selected.fromDate" type="date" class="form-control">
+        <div class="col-lg-8">
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-107"></canvas>
+                </div>
               </div>
-              <div class="col">
-                <label for="">To</label>
-                <input v-model="selected.toDate" type="date" class="form-control">
+            </div>
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-108"></canvas>
+                </div>
               </div>
-              <div class="col">
-                <label for="">District:</label>
-                <select v-model="selected.occurDistrict" @change="onDistrictChange($event)" class="form-control">
-                  <option v-for="ele in responses.DistrictNameList" v-bind:value="ele.districtname">
-                    {{ele.districtname}}({{ele.code}})</option>
-                </select>
+            </div>
+            <div class="col-lg-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-109"></canvas>
+                </div>
               </div>
-              <div class="col">
-                <label for="">Police Station</label>
-                <select :disabled="responses.PoliceStation==null" v-model="selected.occurPolicestation"
-                  @change="onPoliceStationChange($event)" class="form-control">
-                  <option v-for="ele in responses.PoliceStation" v-bind:value="ele.name">
-                    {{ele.name}}({{ele.code}})</option>
-                </select>
+            </div>
+            <div class="col-lg-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-110"></canvas>
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-lg-4" v-if="responses.resp112.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">TOP VEHICLE PROPERTY IN CRIME</h6>
+                  {{responses.resp112[0].property}}: {{responses.resp112[0].count}}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4" v-if="responses.resp113.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">TOP PROPERTY INVOLVED IN CRIME</h6>
+                  {{responses.resp113[0].property}}: {{responses.resp113[0].count}}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4" v-if="responses.resp114.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">TOP TARGETED PROPERTY IN CRIME</h6>
+                  {{responses.resp114[0].property}}: {{responses.resp114[0].count}}
+                </div>
+              </div>
+            </div>
+
+
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-115"></canvas>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-116"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-117"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-118"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-119"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-120"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6" v-if="responses.resp121.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6>ACCUSED AND VICTIM GENDER COUNT WHEN ANY OF THE PROPERTY_TYPE IS SELECTED</h6>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Count Accused</th>
+                        <th scope="col">Count Victim</th>
+                        <th scope="col">Sex</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="i in responses.resp121">
+                        <td>{{i.count_accused}}</td>
+                        <td>{{i.count_victim}}</td>
+                        <td>{{i.sex}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6" v-if="responses.resp122.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6>ACCUSED AND VICTIM GENDER COUNT WHEN BOTH PROPERTY_TYPE ARE SELECTED</h6>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Count Accused</th>
+                        <th scope="col">Count Victim</th>
+                        <th scope="col">Sex</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="i in responses.resp122">
+                        <td>{{i.count_accused}}</td>
+                        <td>{{i.count_victim}}</td>
+                        <td>{{i.sex}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-126"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <canvas id="chart-127"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-4" v-if="responses.resp123.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">TOP VEHICLE PROPERTY IN CRIME</h6>
+                  {{responses.resp123[0].property}}: {{responses.resp123[0].count}}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4" v-if="responses.resp124.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">TOP PROPERTY USED IN CRIME</h6>
+                  {{responses.resp124[0].property}}: {{responses.resp124[0].count}}
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4" v-if="responses.resp125.length != 0">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h6 class="card-subtitle mb-2 text-muted">TOP TARGETED PROPERTY IN CRIME</h6>
+                  {{responses.resp125[0].property}}: {{responses.resp125[0].count}}
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-lg-4">
+
+          <h4>Section 1</h4>
+          <div class="row">
+            <div class="col-sm">
+              <div class="card mb-3">
+                <div class="form-row card-body">
+                  <div class="col">
+                    <label for="">From:</label>
+                    <input v-model="selected.fromDate" type="date" class="form-control">
+                  </div>
+                  <div class="col">
+                    <label for="">To</label>
+                    <input v-model="selected.toDate" type="date" class="form-control">
+                  </div>
+                  <div class="col">
+                    <label for="">District:</label>
+                    <select v-model="selected.occurDistrict" @change="onDistrictChange($event)" class="form-control">
+                      <option v-for="ele in responses.DistrictNameList" v-bind:value="ele.districtname">
+                        {{ele.districtname}}({{ele.code}})</option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <label for="">Police Station</label>
+                    <select :disabled="responses.PoliceStation==null" v-model="selected.occurPolicestation"
+                      @change="onPoliceStationChange($event)" class="form-control">
+                      <option v-for="ele in responses.PoliceStation" v-bind:value="ele.name">
+                        {{ele.name}}({{ele.code}})</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h4>Section 2</h4>
+          <div class="row">
+            <div class="col-sm">
+              <div class="card mb-3">
+                <div class="form-row card-body">
+                  <div class="col-md-6">
+                    <label for="">Case Type:</label>
+                    <select v-model="selected.caseType" @change="onCasetypeChange($event)" class="form-control">
+                      <option v-for="ele in responses.casetype" v-bind:value="ele.caseType">
+                        {{ele.caseType}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="selected">Sub Case Type:</label>
+                    <select :disabled="responses.subCaseTypeforcaseType==null" v-model="selected.caseSubtype"
+                      class="form-control">
+                      <option v-for="ele in responses.subCaseTypeforcaseType" v-bind:value="ele.subCaseType">
+                        {{ele.subCaseType}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="">Act Name: </label>
+                    <select v-model="selected.actCode" class="form-control">
+                      <option v-for="ele in responses.ActCode" v-bind:value="ele.actcode">
+                        {{ele.actcode}}: {{ele.act_shortdesc}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="">Section of Law: </label>
+                    <select v-model="selected.secCode" class="form-control">
+                      <option v-for="ele in responses.ActSection" v-bind:value="ele.sec_code">
+                        {{ele.sec_code}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h4>Section 3</h4>
+          <div class="row">
+            <div class="col-sm">
+              <div class="card mb-3">
+                <div class="form-row card-body">
+                  <div class="col">
+                    <label for="">Place Type Major:</label>
+                    <select v-model="selected.placeTypeMaj" @change="onPlaceTypeMajorChange($event)"
+                      class="form-control">
+                      <option v-for="ele in responses.placeTypeMajor" v-bind:value="ele.value">
+                        {{ele.place_id}}: {{ele.value}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <label for="">Place Type Minor:</label>
+                    <select :disabled="responses.placeTypeMinor==null" v-model="selected.placeTypeMin"
+                      class="form-control">
+                      <option v-for="ele in responses.placeTypeMinor" v-bind:value="ele.value">
+                        {{ele.place_id}}: {{ele.value}}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col">
+                    <label for="">&nbsp;</label>
+                    <!-- :disabled="!(selected.fromDate && selected.toDate && selected.occurDistrict && selected.occurPolicestation)" -->
+                    <button :disabled="!(selected.fromDate && selected.toDate && selected.occurDistrict && selected.occurPolicestation)" class="btn btn-secondary form-control" v-on:click="getGraphs">Graphs</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <h4>Advaned Filters</h4>
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Accused Details</h5>
+                  <label for="">Physical Build:</label>
+                  <select v-model="selected.phyBuild" class="form-control">
+                    <option v-for="ele in responses.AccusedAttributePhysicalBuild" v-bind:value="ele.name">
+                      {{ele.code}}: {{ele.name}}
+                    </option>
+                  </select>
+                  <label for="">Physical Complexion:</label>
+                  <select v-model="selected.phyComplexion" class="form-control">
+                    <option v-for="ele in responses.AccusedAttributePhysicalComplexion" v-bind:value="ele.name">
+                      {{ ele.code }}: {{ ele.name }}
+                    </option>
+                  </select>
+                  <label for="">MO Class:</label>
+                  <select v-model="selected.moClass" class="form-control">
+                    <option v-for="ele in responses.MOAttributeClass" v-bind:value="ele.districtzone">
+                      {{ ele.districtzone }}
+                    </option>
+                  </select>
+                  <label for="">MO Sub Class:</label>
+                  <select v-model="selected.moSubclass" class="form-control">
+                    <option v-for="ele in responses.MOAttributeSubClass" v-bind:value="ele.districtzone">
+                      {{ ele.districtzone }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Targeted property</h5>
+                  <label for="">Vehicle:</label>
+                  <select v-model="selected.VictimPropVehicle" class="form-control">
+                    <option v-for="ele in responses.VictimPropVehicle" v-bind:value="ele.property_type">
+                      {{ele.property_type}}: {{ele.property_value}}
+                    </option>
+                  </select>
+                  <label for="">Asset:</label>
+                  <select v-model="selected.VictimPropAsset" class="form-control">
+                    <option v-for="ele in responses.VictimPropAsset" v-bind:value="ele.property_type">
+                      {{ele.property_type}}: {{ele.property_value}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <h5 class="card-title">Property Used in Crime</h5>
+                  <label for="">Vehicle:</label>
+                  <select v-model="selected.PropInvInCrimeVehicle" class="form-control">
+                    <option v-for="ele in responses.PropInvInCrimeVehicle" v-bind:value="ele.property_type">
+                      {{ele.property_type}}: {{ele.property_value}}
+                    </option>
+                  </select>
+                  <label for="">Weapon:</label>
+                  <select v-model="selected.PropInvInCrimeWeapon" class="form-control">
+                    <option v-for="ele in responses.PropInvInCrimeWeapon" v-bind:value="ele.property_type">
+                      {{ele.property_type}}: {{ele.property_value}}
+                    </option>
+                  </select>
+                  <label for="">Gadget:</label>
+                  <select v-model="selected.PropInvInCrimeGadget" class="form-control">
+                    <option v-for="ele in responses.PropInvInCrimeGadget" v-bind:value="ele.property_type">
+                      {{ele.property_type}}: {{ele.property_value}}
+                    </option>
+                  </select>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <h4>Section 2</h4>
-      <div class="row">
-        <div class="col-sm">
-          <div class="card">
-            <div class="form-row card-body">
-              <div class="col">
-                <label for="">Case Type:</label>
-                <select v-model="selected.caseType" @change="onCasetypeChange($event)" class="form-control">
-                  <option v-for="ele in responses.casetype" v-bind:value="ele.caseType">
-                    {{ele.caseType}}
-                  </option>
-                </select>
-              </div>
-              <div class="col">
-                <label for="selected">Sub Case Type:</label>
-                <select :disabled="responses.subCaseTypeforcaseType==null" v-model="selected.caseSubtype"
-                  class="form-control">
-                  <option v-for="ele in responses.subCaseTypeforcaseType" v-bind:value="ele.subCaseType">
-                    {{ele.subCaseType}}
-                  </option>
-                </select>
-              </div>
-              <div class="col">
-                <label for="">Act Name: </label>
-                <select v-model="selected.actCode" class="form-control">
-                  <option v-for="ele in responses.ActCode" v-bind:value="ele.actcode">
-                    {{ele.actcode}}: {{ele.act_shortdesc}}
-                  </option>
-                </select>
-              </div>
-              <div class="col">
-                <label for="">Section of Law: </label>
-                <select v-model="selected.secCode" class="form-control">
-                  <option v-for="ele in responses.ActSection" v-bind:value="ele.sec_code">
-                    {{ele.sec_code}}
-                  </option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <h4>Section 3</h4>
-      <div class="row">
-        <div class="col-sm">
-          <div class="card">
-            <div class="form-row card-body">
-              <div class="col">
-                <label for="">Place Type Major:</label>
-                <select v-model="selected.placeTypeMaj" @change="onPlaceTypeMajorChange($event)" class="form-control">
-                  <option v-for="ele in responses.placeTypeMajor" v-bind:value="ele.value">
-                    {{ele.place_id}}: {{ele.value}}
-                  </option>
-                </select>
-              </div>
-              <div class="col">
-                <label for="">Place Type Minor:</label>
-                <select :disabled="responses.placeTypeMinor==null" v-model="selected.placeTypeMin" class="form-control">
-                  <option v-for="ele in responses.placeTypeMinor" v-bind:value="ele.value">
-                    {{ele.place_id}}: {{ele.value}}
-                  </option>
-                </select>
-              </div>
-              <div class="col">
-                <label for="">&nbsp;</label>
-                <!-- :disabled="!(selected.fromDate && selected.toDate && selected.occurDistrict && selected.occurPolicestation)" -->
-                <button class="btn btn-secondary form-control" v-on:click="getGraphs">Graphs</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="row">
-        <div class="col">
-          <canvas id="chart-109" width="800" height="450"></canvas>
-        </div>
-      </div>
 
-      <!--
-      <h4>Advaned Filters</h4>
-      <div class="row">
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Details</h5>
-              <label for="">Physical Build:</label>
-              <select v-model="selected.physicalBuild" class="form-control">
-                <option v-for="ele in responses.AccusedAttributePhysicalBuild" v-bind:value="ele.name">
-                  {{ele.code}}: {{ele.name}}
-                </option>
-              </select>
-              <label for="">Physical Complexion:</label>
-              <select v-model="selected.physicalComplexion" class="form-control">
-                <option v-for="ele in responses.AccusedAttributePhysicalComplexion" v-bind:value="ele.name">
-                  {{ ele.code }}: {{ ele.name }}
-                </option>
-              </select>
-              <label for="">MO Class:</label>
-              <select v-model="selected.moAttributeClass" class="form-control">
-                <option v-for="ele in responses.MOAttributeClass" v-bind:value="ele.districtzone">
-                  {{ ele.districtzone }}
-                </option>
-              </select>
-              <label for="">MO Sub Class:</label>
-              <select v-model="selected.moAttributeSubClass" class="form-control">
-                <option v-for="ele in responses.MOAttributeSubClass" v-bind:value="ele.districtzone">
-                  {{ ele.districtzone }}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Targeted property</h5>
-              <label for="">Vehicle:</label>
-              <select v-model="selected.VictimPropVehicle" class="form-control">
-                <option v-for="ele in responses.VictimPropVehicle" v-bind:value="ele.property_value">
-                  {{ele.property_type}}: {{ele.property_value}}
-                </option>
-              </select>
-              <label for="">Asset:</label>
-              <select v-model="selected.VictimPropAsset" class="form-control">
-                <option v-for="ele in responses.VictimPropAsset" v-bind:value="ele.property_value">
-                  {{ele.property_type}}: {{ele.property_value}}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Property Used in Crime</h5>
-              <label for="">Vehicle:</label>
-              <select v-model="selected.PropInvInCrimeVehicle" class="form-control">
-                <option v-for="ele in responses.PropInvInCrimeVehicle" v-bind:value="ele.property_value">
-                  {{ele.property_type}}: {{ele.property_value}}
-                </option>
-              </select>
-              <label for="">Weapon:</label>
-              <select v-model="selected.PropInvInCrimeWeapon" class="form-control">
-                <option v-for="ele in responses.PropInvInCrimeWeapon" v-bind:value="ele.property_value">
-                  {{ele.property_type}}: {{ele.property_value}}
-                </option>
-              </select>
-              <label for="">Gadget:</label>
-              <select v-model="selected.PropInvInCrimeGadget" class="form-control">
-                <option v-for="ele in responses.PropInvInCrimeGadget" v-bind:value="ele.property_value">
-                  {{ele.property_type}}: {{ele.property_value}}
-                </option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-    -->
+
     </div>
   </div>
 
@@ -315,7 +512,30 @@
   <script src="/akv-static/Chart.min.js"></script>
 
   <script>
+    let chart107 = null;
+
+    let chart108 = null;
+
     let chart109 = null;
+
+    let chart110 = null;
+
+    let chart115 = null;
+
+    let chart116 = null;
+
+    let chart117 = null;
+
+    let chart118 = null;
+
+    let chart119 = null;
+
+    let chart120 = null;
+
+    let chart126 = null;
+
+    let chart127 = null;
+    //apis 112, 113, 114
 
     var app = new Vue({
 
@@ -351,6 +571,14 @@
           PropInvInCrimeVehicle: null,
           PropInvInCrimeWeapon: null,
           PropInvInCrimeGadget: null,
+          resp112: [],
+          resp113: [],
+          resp114: [],
+          resp121: [],
+          resp122: [],
+          resp123: [],
+          resp124: [],
+          resp125: [],
         },
 
         selected: {
@@ -365,12 +593,14 @@
           placeTypeMaj: null,
           placeTypeMin: null,
 
-          physicalBuild: null,
-          physicalComplexion: null,
-          moAttributeClass: null,
-          moAttributeSubClass: null,
+          phyBuild: null,
+          phyComplexion: null,
+          moClass: null,
+          moSubclass: null,
+
           VictimPropVehicle: null,
           VictimPropAsset: null,
+
           PropInvInCrimeVehicle: null,
           PropInvInCrimeWeapon: null,
           PropInvInCrimeGadget: null,
@@ -593,7 +823,8 @@
 
         getGraphs: function () {
 
-          console.log(this.selected)
+          console.clear();
+          // console.log(this.selected)
 
           let params = {
 
@@ -616,33 +847,109 @@
             placeTypeMaj: this.selected.placeTypeMaj ? this.selected.placeTypeMaj : '%',
 
             placeTypeMin: this.selected.placeTypeMin ? this.selected.placeTypeMin : '%'
-          }
+          };
 
-          console.log(params)
+          // console.log(params)
 
+          //107
           axios.get("/apis/AccusedAndVictimAgeRange", { params: params }).then((response) => {
 
-            //console.log(response.data)
+            // console.log(response.data)
+
+            let res = response.data[0]
+
+            let labels = ["Accused", "Victim"];
+
+            let datasets = [{
+              label: 'age_19_35',
+              data: [res['age_19_35_ACCUSED'], res['age_19_35_VICTIM']],
+              backgroundColor: '#3e95cd'
+            }, {
+              label: 'age_36_50',
+              data: [res['age_36_50_ACCUSED'], res['age_36_50_VICTIM']],
+              backgroundColor: '#8e5ea2'
+            }, {
+              label: 'under_18',
+              data: [res['under_18_ACCUSED'], res['under_18_VICTIM']],
+              backgroundColor: '#3cba9f'
+            }, {
+              label: 'More_than_50',
+              data: [res['more_than_50_ACCUSED'], res['victim_More_than_50']],
+              backgroundColor: '#e8c3b9'
+            }];
+
+            if (chart107) chart107.destroy();
+
+            chart107 = new Chart(document.getElementById("chart-107"), {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: datasets
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'ACCUSED AND VICTIM AGE RANGE'
+                },
+                scales: {
+                  xAxes: [{
+                    stacked: true
+                  }],
+                  yAxes: [{
+                    stacked: true
+                  }]
+                }
+              }
+            });
 
           }).catch(error => console.log(error))
 
+          //108 only if ( placeTypeMaj == null && placeTypeMin == null,)
           axios.get("/apis/Top5MajorPlaces", { params: params }).then((response) => {
 
-            //console.log(response.data)
+            // console.log(response.data)
+
+            let labels = response.data.map(e => e.value.trim().concat("(", e.place_type_maj, ")"));
+
+            let data = response.data.map(e => e.count);
+
+            if (chart108) chart108.destroy();
+
+            chart108 = new Chart(document.getElementById("chart-108"), {
+              type: 'horizontalBar',
+              data: {
+                labels: labels,
+                datasets: [
+                  {
+                    label: "Value",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: data
+                  }
+                ]
+              },
+              options: {
+                legend: { display: false },
+                title: {
+                  display: true,
+                  text: 'TOP 5 MAJOR PLACES'
+                }
+              }
+            });
 
           }).catch(error => console.log(error))
 
+          //109
           axios.get("/apis/DaywiseCrimeCount", { params: params }).then((response) => {
 
-            console.log(response.data)
+            // console.log(response.data)
 
-            let labels = response.data.map ( ele => ele.days )
+            let labels = response.data.map(ele => ele.days)
 
-            let data = response.data.map ( ele => ele.count )
+            let data = response.data.map(ele => ele.count)
 
-            if ( chart109 ) chart109.destroy();
+            if (chart109) chart109.destroy();
 
-            chart109 = new Chart ( document.getElementById ( "chart-109" ), {
+            chart109 = new Chart(document.getElementById("chart-109"), {
               type: 'line',
               data: {
                 labels: labels,
@@ -663,27 +970,470 @@
 
           }).catch(error => console.log(error))
 
+          //110
           axios.get("/apis/DayTimewise", { params: params }).then((response) => {
 
-            //console.log(response.data)
+            // console.log(response.data)
+
+            let res = response.data[0];
+
+            if (chart110) chart110.destroy();
+
+            chart110 = new Chart(document.getElementById("chart-110"), {
+              type: 'doughnut',
+              data: {
+                labels: Object.keys(res),
+                datasets: [
+                  {
+                    label: "daywise",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: Object.values(res)
+                  }
+                ]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Daytime wise trends'
+                }
+              }
+            });
 
           }).catch(error => console.log(error))
 
+          //112
           axios.get("/apis/TopVehiclePropertyinCrime", { params: params }).then((response) => {
 
-            //console.log(response.data)
+            // console.log(response.data)
+
+            this.responses.resp112 = response.data;
 
           }).catch(error => console.log(error))
 
+          //113
           axios.get("/apis/TopPropertyinCrime", { params: params }).then((response) => {
 
-            //console.log(response.data)
+            // console.log(response.data)
+
+            this.responses.resp113 = response.data;
 
           }).catch(error => console.log(error))
 
+          //114
           axios.get("/apis/TopTargetedPropertyInCrime", { params: params }).then((response) => {
 
-            //console.log(response.data)
+            // console.log(response.data)
+
+            this.responses.resp114 = response.data;
+
+          }).catch(error => console.log(error))
+
+
+          let propertyType = '%', propertyType1 = '%'
+
+          if (this.selected.VictimPropVehicle && this.selected.VictimPropAsset) {
+
+            propertyType = this.selected.VictimPropVehicle.concat(",", this.selected.VictimPropAsset)
+
+          } else if (this.selected.VictimPropVehicle) {
+
+            propertyType = this.selected.VictimPropVehicle
+
+          } else if (this.selected.VictimPropAsset) {
+
+            propertyType = this.selected.VictimPropAsset
+
+          } else {
+
+            propertyType = '%'
+          }
+
+          // console.log (this.selected.PropInvInCrimeVehicle, this.selected.PropInvInCrimeWeapon, this.selected.PropInvInCrimeGadget)
+
+          if (this.selected.PropInvInCrimeVehicle || this.selected.PropInvInCrimeWeapon || this.selected.PropInvInCrimeGadget) {
+
+            propertyType1 = '';
+
+            if (this.selected.PropInvInCrimeVehicle) {
+
+              propertyType1 = propertyType1.concat(this.selected.PropInvInCrimeVehicle)
+
+            }
+
+            if (this.selected.PropInvInCrimeWeapon) {
+
+              if (propertyType1 == '') {
+
+                propertyType1 = propertyType1.concat(this.selected.PropInvInCrimeWeapon)
+
+              } else {
+
+                propertyType1 = propertyType1.concat(",", this.selected.PropInvInCrimeWeapon)
+              }
+            }
+
+            if (this.selected.PropInvInCrimeGadget) {
+
+              if (propertyType1 == '') {
+
+                propertyType1 = propertyType1.concat(this.selected.PropInvInCrimeGadget)
+
+              } else {
+
+                propertyType1 = propertyType1.concat(",", this.selected.PropInvInCrimeGadget)
+              }
+            }
+          }
+
+          let advParams = {
+
+            ...params,
+
+            personType: (this.selected.phyBuild || this.selected.phyComplexion || this.selected.moClass || this.selected.moSubclass) ? 4 : '%',
+
+            phyBuild: this.selected.phyBuild ? this.selected.phyBuild : '%',
+
+            phyComplexion: this.selected.phyComplexion ? this.selected.phyComplexion : '%',
+
+            moClass: this.selected.moClass ? this.selected.moClass : '%',
+
+            moSubclass: this.selected.moSubclass ? this.selected.moSubclass : '%',
+
+            propertyStatus: (this.selected.VictimPropVehicle || this.selected.VictimPropAsset) ? 5 : '%',
+
+            propertyType: propertyType,
+
+            propertyStatus1: (this.selected.PropInvInCrimeVehicle || this.selected.PropInvInCrimeWeapon || this.selected.PropInvInCrimeGadget) ? 1 : '%',
+
+            propertyType1: propertyType1
+          }
+
+          console.log(advParams);
+
+          //115 only if ( placeTypeMaj == null && placeTypeMin == null,)
+          axios.get("/apis/Top5MajorPlacesWhenAnyOneOfPropertyTypeIsSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            if (chart115) chart115.destroy();
+
+            chart115 = new Chart(document.getElementById("chart-115"), {
+              type: 'doughnut',
+              data: {
+                labels: response.data.map(e => e.value.trim()),
+                datasets: [
+                  {
+                    label: "daywise",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: response.data.map(e => e.count)
+                  }
+                ]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Top 5 Major Places When Any One Of PropertyType Is Selected'
+                }
+              }
+            });
+
+          }).catch(error => console.log(error))
+
+          //116 only if ( placeTypeMaj == null && placeTypeMin == null,)
+          axios.get("/apis/Top5WhenBothThePropertyTypeAreSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            if (chart116) chart116.destroy();
+
+            chart116 = new Chart(document.getElementById("chart-116"), {
+              type: 'bar',
+              data: {
+                labels: response.data.map(e => e.value.trim()),
+                datasets: [
+                  {
+                    label: "Count",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: response.data.map(e => e.count)
+                  }
+                ]
+              },
+              options: {
+                legend: { display: false },
+                title: {
+                  display: true,
+                  text: 'Top 5 When Both The PropertyType Are Selected'
+                }
+              }
+            })
+
+          }).catch(error => console.log(error))
+
+          //117
+          axios.get("/apis/DayWiseCountWhenAnyofthePropertyTypeSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            if (chart117) chart117.destroy();
+
+            chart117 = new Chart(document.getElementById("chart-117"), {
+              type: 'line',
+              data: {
+                labels: response.data.map(e => e.days),
+                datasets: [{
+                  data: response.data.map(e => e.count),
+                  label: "Count",
+                  borderColor: "#3e95cd",
+                  fill: false
+                }
+                ]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Day Wise Count When Any of the Property Type Selected'
+                }
+              }
+            })
+
+          }).catch(error => console.log(error))
+
+          //118
+          axios.get("/apis/DaywiseCountWhenBothPropertyAreSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            if (chart118) chart118.destroy();
+
+            chart118 = new Chart(document.getElementById("chart-118"), {
+              type: 'line',
+              data: {
+                labels: response.data.map(e => e.days),
+                datasets: [{
+                  data: response.data.map(e => e.count),
+                  label: "Count",
+                  borderColor: "#c45850",
+                  fill: false
+                }]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Daywise Count When Both Property Are Selected'
+                }
+              }
+            })
+
+          }).catch(error => console.log(error))
+
+          //119
+          axios.get("/apis/DayTimeWiseWhenAnyPropertyTypeisSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+            let res = response.data[0];
+
+            if (chart119) chart119.destroy();
+
+            chart119 = new Chart(document.getElementById("chart-119"), {
+              type: 'doughnut',
+              data: {
+                labels: Object.keys(res),
+                datasets: [
+                  {
+                    label: "daywise",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: Object.values(res)
+                  }
+                ]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'DayTime Wise When Any Property Type is Selected'
+                }
+              }
+            });
+
+          }).catch(error => console.log(error))
+
+          //120
+          axios.get("/apis/AdvancedWhenBothThePropertyTypeAreSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+            let res = response.data[0];
+
+            if (chart120) chart120.destroy();
+
+            chart120 = new Chart(document.getElementById("chart-120"), {
+              type: 'doughnut',
+              data: {
+                labels: Object.keys(res),
+                datasets: [
+                  {
+                    label: "daywise",
+                    backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                    data: Object.values(res)
+                  }
+                ]
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'Advanced When Both The Property Type Are Selected'
+                }
+              }
+            });
+
+          }).catch(error => console.log(error))
+
+          //121
+          axios.get("/apis/AccusedAndVictimGenderWhenAnyOfThePropertyTypeSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            this.responses.resp121 = response.data
+
+          }).catch(error => console.log(error))
+
+          //122
+          axios.get("/apis/AdvancedAccusedandVictimGenderwhenBothPropertyTypeselected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            this.responses.resp122 = response.data
+
+          }).catch(error => console.log(error))
+
+          //123
+          axios.get("/apis/AdvancedTopVehiclePropertyinCrime", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            this.responses.resp123 = response.data
+
+          }).catch(error => console.log(error))
+
+          //124
+          axios.get("/apis/AdvancedTopPropertyinCrime", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            this.responses.resp124 = response.data
+
+          }).catch(error => console.log(error))
+
+          //125
+          axios.get("/apis/AdvancedTopTargetedPropertyInCrime", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            this.responses.resp125 = response.data
+
+          }).catch(error => console.log(error))
+
+          //126
+          axios.get("/apis/AdvancedAccusedAndVictimAgeRangeWhenOnePropertyisSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            let res = response.data[0]
+
+            let labels = ["Accused", "Victim"];
+
+            let datasets = [{
+              label: 'age_19_35',
+              data: [res['age_19_35_ACCUSED'], res['age_19_35_VICTIM']],
+              backgroundColor: '#3e95cd'
+            }, {
+              label: 'age_36_50',
+              data: [res['age_36_50_ACCUSED'], res['age_36_50_VICTIM']],
+              backgroundColor: '#8e5ea2'
+            }, {
+              label: 'under_18',
+              data: [res['under_18_ACCUSED'], res['under_18_VICTIM']],
+              backgroundColor: '#3cba9f'
+            }, {
+              label: 'More_than_50',
+              data: [res['more_than_50_ACCUSED'], res['victim_More_than_50']],
+              backgroundColor: '#e8c3b9'
+            }];
+
+            if (chart126) chart126.destroy();
+
+            chart126 = new Chart(document.getElementById("chart-126"), {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: datasets
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'ACCUSED AGE RANGE WHEN ACCUSED ATTRIBUTES AND ONE OF THE PROPERTY ARE SELECTED'
+                },
+                scales: {
+                  xAxes: [{
+                    stacked: true
+                  }],
+                  yAxes: [{
+                    stacked: true
+                  }]
+                }
+              }
+            });
+
+          }).catch(error => console.log(error))
+
+          //127
+          axios.get("/apis/AdvancedAccusedAndVictimAgeRangeWhenBothPropertyareSelected", { params: advParams }).then((response) => {
+
+            // console.log(response.data)
+
+            let res = response.data[0]
+
+            let labels = ["Accused", "Victim"];
+
+            let datasets = [{
+              label: 'age_19_35',
+              data: [res['age_19_35_ACCUSED'], res['age_19_35_VICTIM']],
+              backgroundColor: '#3e95cd'
+            }, {
+              label: 'age_36_50',
+              data: [res['age_36_50_ACCUSED'], res['age_36_50_VICTIM']],
+              backgroundColor: '#8e5ea2'
+            }, {
+              label: 'under_18',
+              data: [res['under_18_ACCUSED'], res['under_18_VICTIM']],
+              backgroundColor: '#3cba9f'
+            }, {
+              label: 'More_than_50',
+              data: [res['more_than_50_ACCUSED'], res['victim_More_than_50']],
+              backgroundColor: '#e8c3b9'
+            }];
+
+            if (chart127) chart127.destroy();
+
+            chart127 = new Chart(document.getElementById("chart-127"), {
+              type: 'bar',
+              data: {
+                labels: labels,
+                datasets: datasets
+              },
+              options: {
+                title: {
+                  display: true,
+                  text: 'ACCUSED AGE RANGE WHEN BOTH THE PROPERTY TYPE ARE SELECTED'
+                },
+                scales: {
+                  xAxes: [{
+                    stacked: true
+                  }],
+                  yAxes: [{
+                    stacked: true
+                  }]
+                }
+              }
+            });
 
           }).catch(error => console.log(error))
         }

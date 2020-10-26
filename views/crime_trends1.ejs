@@ -1,0 +1,1474 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://unpkg.com/vue"></script>
+    <title>Crime Trends</title>
+</head>
+
+<body>
+    <div id="app">
+        <nav class="navbar navbar-dark bg-dark">
+            <span class="navbar-brand mb-0 h1">{{ title }}</span>
+        </nav>
+
+        <div class="container-fluid">
+            <!-- Color boxes -->
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Crime ( 1 year )</h5>
+                            <p v-if="responses.TotalCrimeCountForlast1year">
+                                Count: {{ responses.TotalCrimeCountForlast1year[0].count }}
+                            </p>
+                            <h5 class="card-title">Top District</h5>
+                            <p v-if="responses.TopCrimeDistrictforlastoneyear">
+                                Count: {{ responses.TopCrimeDistrictforlastoneyear[0].count }},
+                                Occur District: {{ responses.TopCrimeDistrictforlastoneyear[0].occur_district }}<br>
+                                District Name: {{ responses.TopCrimeDistrictforlastoneyear[0].district_name }}<br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Total Crime ( last 3 months )</h5>
+                            <p v-if="responses.LastthreemonthstotalCrime">
+                                Count: {{ responses.LastthreemonthstotalCrime[0].count }}
+                            </p>
+                            <h5 class="card-title">Top District</h5>
+                            <p v-if="responses.LastthreemonthstopCrimeDistricts">
+                                Count: {{ responses.LastthreemonthstopCrimeDistricts[0].count }}<br>
+                                District Name: {{ responses.LastthreemonthstopCrimeDistricts[0].district_name }}<br>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Place of Crime</h5>
+                            <p v-if="responses.PlaceofCrime">
+                            <div v-for="ele in responses.PlaceofCrime"
+                                style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                                Count: {{ele.count}},
+                                Place Type Maj: {{ele.place_type_maj}},
+                                Value: {{ele.value}}
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Male Accused</h5>
+                            <p v-if="responses.Maleaccusedcountlast2years">
+                            <div v-for="ele in responses.Maleaccusedcountlast2years"
+                                style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                                Count: {{ele.count}},
+                                Year: {{ele.year}}
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Female Victim</h5>
+                            <p v-if="responses.FemaleVictimCountforlast2year">
+                            <div v-for="ele in responses.FemaleVictimCountforlast2year"
+                                style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                                Count: {{ele.count}},
+                                Year: {{ele.year}}
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Uder 18 Accused</h5>
+                            <p v-if="responses.CrimeinVillageCountforlast2year">
+                            <div v-for="ele in responses.CrimeinVillageCountforlast2year"
+                                style="border-bottom: 1px dotted #eaeaea;padding: 3px 0;">
+                                Count: {{ele.count}},
+                                Year: {{ele.year}}
+                            </div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Color boxes end -->
+
+            <div class="row">
+                <div class="col-lg-8">
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-107"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-108"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-109"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-110"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-4" v-if="responses.resp112.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">TOP VEHICLE PROPERTY IN CRIME</h6>
+                                    {{responses.resp112[0].property}}: {{responses.resp112[0].count}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" v-if="responses.resp113.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">TOP PROPERTY INVOLVED IN CRIME</h6>
+                                    {{responses.resp113[0].property}}: {{responses.resp113[0].count}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" v-if="responses.resp114.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">TOP TARGETED PROPERTY IN CRIME</h6>
+                                    {{responses.resp114[0].property}}: {{responses.resp114[0].count}}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-115"></canvas>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-116"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-117"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-118"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-119"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-120"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" v-if="responses.resp121.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6>ACCUSED AND VICTIM GENDER COUNT WHEN ANY OF THE PROPERTY_TYPE IS SELECTED</h6>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Count Accused</th>
+                                                <th scope="col">Count Victim</th>
+                                                <th scope="col">Sex</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="i in responses.resp121">
+                                                <td>{{i.count_accused}}</td>
+                                                <td>{{i.count_victim}}</td>
+                                                <td>{{i.sex}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6" v-if="responses.resp122.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6>ACCUSED AND VICTIM GENDER COUNT WHEN BOTH PROPERTY_TYPE ARE SELECTED</h6>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Count Accused</th>
+                                                <th scope="col">Count Victim</th>
+                                                <th scope="col">Sex</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="i in responses.resp122">
+                                                <td>{{i.count_accused}}</td>
+                                                <td>{{i.count_victim}}</td>
+                                                <td>{{i.sex}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-126"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <canvas id="chart-127"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4" v-if="responses.resp123.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">TOP VEHICLE PROPERTY IN CRIME</h6>
+                                    {{responses.resp123[0].property}}: {{responses.resp123[0].count}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" v-if="responses.resp124.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">TOP PROPERTY USED IN CRIME</h6>
+                                    {{responses.resp124[0].property}}: {{responses.resp124[0].count}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4" v-if="responses.resp125.length != 0">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h6 class="card-subtitle mb-2 text-muted">TOP TARGETED PROPERTY IN CRIME</h6>
+                                    {{responses.resp125[0].property}}: {{responses.resp125[0].count}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-4">
+
+                    <h4>Section 1</h4>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="card mb-3">
+                                <div class="form-row card-body">
+                                    <div class="col">
+                                        <label for="">From:</label>
+                                        <input v-model="selected.fromDate" type="date" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <label for="">To</label>
+                                        <input v-model="selected.toDate" type="date" class="form-control">
+                                    </div>
+                                    <div class="col">
+                                        <label for="">District:</label>
+                                        <select v-model="selected.occurDistrict" @change="onDistrictChange($event)"
+                                            class="form-control">
+                                            <option v-for="ele in responses.DistrictNameList"
+                                                v-bind:value="ele.districtname">
+                                                {{ele.districtname}}({{ele.code}})</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="">Police Station</label>
+                                        <select :disabled="responses.PoliceStation==null"
+                                            v-model="selected.occurPolicestation"
+                                            @change="onPoliceStationChange($event)" class="form-control">
+                                            <option v-for="ele in responses.PoliceStation" v-bind:value="ele.name">
+                                                {{ele.name}}({{ele.code}})</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Section 2</h4>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="card mb-3">
+                                <div class="form-row card-body">
+                                    <div class="col-md-6">
+                                        <label for="">Case Type:</label>
+                                        <select v-model="selected.caseType" @change="onCasetypeChange($event)"
+                                            class="form-control">
+                                            <option v-for="ele in responses.casetype" v-bind:value="ele.caseType">
+                                                {{ele.caseType}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="selected">Sub Case Type:</label>
+                                        <select :disabled="responses.subCaseTypeforcaseType==null"
+                                            v-model="selected.caseSubtype" class="form-control">
+                                            <option v-for="ele in responses.subCaseTypeforcaseType"
+                                                v-bind:value="ele.subCaseType">
+                                                {{ele.subCaseType}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">Act Name: </label>
+                                        <select v-model="selected.actCode" class="form-control">
+                                            <option v-for="ele in responses.ActCode" v-bind:value="ele.actcode">
+                                                {{ele.actcode}}: {{ele.act_shortdesc}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="">Section of Law: </label>
+                                        <select v-model="selected.secCode" class="form-control">
+                                            <option v-for="ele in responses.ActSection" v-bind:value="ele.sec_code">
+                                                {{ele.sec_code}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Section 3</h4>
+                    <div class="row">
+                        <div class="col-sm">
+                            <div class="card mb-3">
+                                <div class="form-row card-body">
+                                    <div class="col">
+                                        <label for="">Place Type Major:</label>
+                                        <select v-model="selected.placeTypeMaj" @change="onPlaceTypeMajorChange($event)"
+                                            class="form-control">
+                                            <option v-for="ele in responses.placeTypeMajor" v-bind:value="ele.value">
+                                                {{ele.place_id}}: {{ele.value}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="">Place Type Minor:</label>
+                                        <select :disabled="responses.placeTypeMinor==null"
+                                            v-model="selected.placeTypeMin" class="form-control">
+                                            <option v-for="ele in responses.placeTypeMinor" v-bind:value="ele.value">
+                                                {{ele.place_id}}: {{ele.value}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="">&nbsp;</label>
+                                        <!-- :disabled="!(selected.fromDate && selected.toDate && selected.occurDistrict && selected.occurPolicestation)" -->
+                                        <button
+                                            :disabled="!(selected.fromDate && selected.toDate && selected.occurDistrict && selected.occurPolicestation)"
+                                            class="btn btn-secondary form-control"
+                                            v-on:click="getGraphs">Graphs</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Advaned Filters</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Accused Details</h5>
+                                    <label for="">Physical Build:</label>
+                                    <select v-model="selected.phyBuild" class="form-control">
+                                        <option v-for="ele in responses.AccusedAttributePhysicalBuild"
+                                            v-bind:value="ele.name">
+                                            {{ele.code}}: {{ele.name}}
+                                        </option>
+                                    </select>
+                                    <label for="">Physical Complexion:</label>
+                                    <select v-model="selected.phyComplexion" class="form-control">
+                                        <option v-for="ele in responses.AccusedAttributePhysicalComplexion"
+                                            v-bind:value="ele.name">
+                                            {{ ele.code }}: {{ ele.name }}
+                                        </option>
+                                    </select>
+                                    <label for="">MO Class:</label>
+                                    <select v-model="selected.moClass" class="form-control">
+                                        <option v-for="ele in responses.MOAttributeClass"
+                                            v-bind:value="ele.districtzone">
+                                            {{ ele.districtzone }}
+                                        </option>
+                                    </select>
+                                    <label for="">MO Sub Class:</label>
+                                    <select v-model="selected.moSubclass" class="form-control">
+                                        <option v-for="ele in responses.MOAttributeSubClass"
+                                            v-bind:value="ele.districtzone">
+                                            {{ ele.districtzone }}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Targeted property</h5>
+                                    <label for="">Vehicle:</label>
+                                    <select v-model="selected.VictimPropVehicle" class="form-control">
+                                        <option v-for="ele in responses.VictimPropVehicle"
+                                            v-bind:value="ele.property_type">
+                                            {{ele.property_type}}: {{ele.property_value}}
+                                        </option>
+                                    </select>
+                                    <label for="">Asset:</label>
+                                    <select v-model="selected.VictimPropAsset" class="form-control">
+                                        <option v-for="ele in responses.VictimPropAsset"
+                                            v-bind:value="ele.property_type">
+                                            {{ele.property_type}}: {{ele.property_value}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5 class="card-title">Property Used in Crime</h5>
+                                    <label for="">Vehicle:</label>
+                                    <select v-model="selected.PropInvInCrimeVehicle" class="form-control">
+                                        <option v-for="ele in responses.PropInvInCrimeVehicle"
+                                            v-bind:value="ele.property_type">
+                                            {{ele.property_type}}: {{ele.property_value}}
+                                        </option>
+                                    </select>
+                                    <label for="">Weapon:</label>
+                                    <select v-model="selected.PropInvInCrimeWeapon" class="form-control">
+                                        <option v-for="ele in responses.PropInvInCrimeWeapon"
+                                            v-bind:value="ele.property_type">
+                                            {{ele.property_type}}: {{ele.property_value}}
+                                        </option>
+                                    </select>
+                                    <label for="">Gadget:</label>
+                                    <select v-model="selected.PropInvInCrimeGadget" class="form-control">
+                                        <option v-for="ele in responses.PropInvInCrimeGadget"
+                                            v-bind:value="ele.property_type">
+                                            {{ele.property_type}}: {{ele.property_value}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.12.0/axios.min.js"
+        integrity="sha512-kBcXZzQzb0eDcxC/RG8j66AGW5E+/Ky+PsCuxkYEqvh0usVeQ2fv4QsmYL6KGktRm+Aw1rjjIF1DFGcIRvXrwg=="
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"
+        integrity="sha512-HCG6Vbdg4S+6MkKlMJAm5EHJDeTZskUdUMTb8zNcUKoYNDteUQ0Zig30fvD9IXnRv7Y0X4/grKCnNoQ21nF2Qw=="
+        crossorigin="anonymous"></script>
+
+    <script>
+        let chart107 = null;
+
+        let chart108 = null;
+
+        let chart109 = null;
+
+        let chart110 = null;
+
+        let chart115 = null;
+
+        let chart116 = null;
+
+        let chart117 = null;
+
+        let chart118 = null;
+
+        let chart119 = null;
+
+        let chart120 = null;
+
+        let chart126 = null;
+
+        let chart127 = null;
+        //apis 112, 113, 114
+
+        var app = new Vue({
+
+            el: '#app',
+
+            data: {
+
+                title: 'Crime Trends',
+
+                responses: {
+                    TotalCrimeCountForlast1year: null,
+                    TopCrimeDistrictforlastoneyear: null,
+                    LastthreemonthstotalCrime: null,
+                    LastthreemonthstopCrimeDistricts: null,
+                    PlaceofCrime: null,
+                    Maleaccusedcountlast2years: null,
+                    FemaleVictimCountforlast2year: null,
+                    CrimeinVillageCountforlast2year: null,
+                    DistrictNameList: null,
+                    PoliceStation: null,
+                    casetype: null,
+                    subCaseTypeforcaseType: null,
+                    ActCode: null,
+                    ActSection: null,
+                    placeTypeMajor: null,
+                    placeTypeMinor: null,
+                    AccusedAttributePhysicalBuild: null,
+                    AccusedAttributePhysicalComplexion: null,
+                    MOAttributeClass: null,
+                    MOAttributeSubClass: null,
+                    VictimPropVehicle: null,
+                    VictimPropAsset: null,
+                    PropInvInCrimeVehicle: null,
+                    PropInvInCrimeWeapon: null,
+                    PropInvInCrimeGadget: null,
+                    resp112: [],
+                    resp113: [],
+                    resp114: [],
+                    resp121: [],
+                    resp122: [],
+                    resp123: [],
+                    resp124: [],
+                    resp125: [],
+                },
+
+                selected: {
+                    fromDate: null,
+                    toDate: null,
+                    occurDistrict: null,
+                    occurPolicestation: null,
+                    caseType: null,
+                    caseSubtype: null,
+                    actCode: null,
+                    secCode: null,
+                    placeTypeMaj: null,
+                    placeTypeMin: null,
+
+                    phyBuild: null,
+                    phyComplexion: null,
+                    moClass: null,
+                    moSubclass: null,
+
+                    VictimPropVehicle: null,
+                    VictimPropAsset: null,
+
+                    PropInvInCrimeVehicle: null,
+                    PropInvInCrimeWeapon: null,
+                    PropInvInCrimeGadget: null,
+
+                }
+            },
+            methods: {
+
+                initialize: function () {
+
+                    axios.get("/apis/TotalCrimeCountForlast1year").then((response) => {
+                        console.log('TotalCrimeCountForlast1year: ', response.data)
+                        this.responses.TotalCrimeCountForlast1year = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/TopCrimeDistrictforlastoneyear").then((response) => {
+                        console.log('TopCrimeDistrictforlastoneyear: ', response.data)
+                        this.responses.TopCrimeDistrictforlastoneyear = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/LastthreemonthstotalCrime").then((response) => {
+                        console.log('LastthreemonthstotalCrime: ', response.data)
+                        this.responses.LastthreemonthstotalCrime = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/LastthreemonthstopCrimeDistricts").then((response) => {
+                        console.log('LastthreemonthstopCrimeDistricts: ', response.data)
+                        this.responses.LastthreemonthstopCrimeDistricts = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/PlaceofCrime").then((response) => {
+                        console.log('PlaceofCrime: ', response.data)
+                        this.responses.PlaceofCrime = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/Maleaccusedcountlast2years").then((response) => {
+                        console.log('Maleaccusedcountlast2years: ', response.data)
+                        this.responses.Maleaccusedcountlast2years = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/FemaleVictimCountforlast2year").then((response) => {
+                        console.log('FemaleVictimCountforlast2year: ', response.data)
+                        this.responses.FemaleVictimCountforlast2year = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/CrimeinVillageCountforlast2year").then((response) => {
+                        console.log('CrimeinVillageCountforlast2year: ', response.data)
+                        this.responses.CrimeinVillageCountforlast2year = response.data
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/DistrictNameList").then((response) => {
+
+                        console.log('DistrictNameList: ', response.data)
+
+                        this.responses.DistrictNameList = response.data
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/casetype").then((response) => {
+
+                        console.log('casetype: ', response.data)
+
+                        this.responses.casetype = response.data
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/ActCode").then((response) => {
+
+                        console.log('ActCode: ', response.data)
+
+                        this.responses.ActCode = response.data
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/ActSection").then((response) => {
+
+                        console.log('ActSection: ', response.data)
+
+                        this.responses.ActSection = response.data
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/placeTypeMajor").then((response) => {
+
+                        console.log('placeTypeMajor: ', response.data)
+
+                        this.responses.placeTypeMajor = response.data
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/AccusedAttributePhysicalBuild").then((response) => {
+
+                        console.log('AccusedAttributePhysicalBuild: ', response.data);
+
+                        this.responses.AccusedAttributePhysicalBuild = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/AccusedAttributePhysicalComplexion").then((response) => {
+
+                        console.log('AccusedAttributePhysicalComplexion: ', response.data);
+
+                        this.responses.AccusedAttributePhysicalComplexion = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/MOAttributeClass").then((response) => {
+
+                        console.log('MOAttributeClass: ', response.data);
+
+                        this.responses.MOAttributeClass = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/MOAttributeSubClass").then((response) => {
+
+                        console.log('MOAttributeSubClass: ', response.data);
+
+                        this.responses.MOAttributeSubClass = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/VictimPropVehicle").then((response) => {
+
+                        console.log('VictimPropVehicle: ', response.data);
+
+                        this.responses.VictimPropVehicle = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/VictimPropAsset").then((response) => {
+
+                        console.log('VictimPropAsset: ', response.data);
+
+                        this.responses.VictimPropAsset = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/PropInvInCrimeVehicle").then((response) => {
+
+                        console.log('PropInvInCrimeVehicle: ', response.data);
+
+                        this.responses.PropInvInCrimeVehicle = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/PropInvInCrimeWeapon").then((response) => {
+
+                        console.log('PropInvInCrimeWeapon: ', response.data);
+
+                        this.responses.PropInvInCrimeWeapon = response.data;
+
+                    }).catch((error) => console.log(error))
+
+                    axios.get("/apis/PropInvInCrimeGadget").then((response) => {
+
+                        console.log('PropInvInCrimeGadget: ', response.data);
+
+                        this.responses.PropInvInCrimeGadget = response.data;
+
+                    }).catch((error) => console.log(error))
+                },
+
+                onDistrictChange: function (e) {
+
+                    console.log(e.target.value)
+
+                    this.loadPoliceStations(e.target.value)
+                },
+
+                loadPoliceStations: function (district) {
+
+                    axios.get("/apis/PoliceStation", { params: { occurDistrict: this.selected.occurDistrict } }).then(response => {
+
+                        console.log(response.data)
+
+                        this.responses.PoliceStation = response.data
+
+                    }).catch(error => console.log(error))
+                },
+
+                onPoliceStationChange: function (e) {
+
+                    console.log(e.target.value)
+                },
+
+                onCasetypeChange: function (e) {
+
+                    console.log(e.target.value)
+
+                    this.loadSubCaseTypes(e.target.value)
+                },
+
+                loadSubCaseTypes: function (caseType) {
+
+                    axios.get("/apis/subCaseTypeforcaseType", { params: { caseType: caseType } }).then((response) => {
+
+                        this.responses.subCaseTypeforcaseType = response.data
+
+                    }).catch(error => console.log(error))
+
+                },
+
+                onPlaceTypeMajorChange: function (e) {
+
+                    console.log(e.target.value)
+
+                    this.loadPlaceTypeMinor(e.target.value);
+                },
+
+                loadPlaceTypeMinor: function (placetypemajor) {
+
+                    axios.get("/apis/placeTypeMinor", { params: { placetypemajor: placetypemajor } }).then((response) => {
+
+                        this.responses.placeTypeMinor = response.data
+
+                    }).catch(error => console.log(error))
+
+                },
+
+                getGraphs: function () {
+
+                    console.clear();
+                    // console.log(this.selected)
+
+                    let params = {
+
+                        fromDate: this.selected.fromDate ? this.selected.fromDate : '%',
+
+                        toDate: this.selected.toDate ? this.selected.toDate : '%',
+
+                        occurDistrict: this.selected.occurDistrict ? this.selected.occurDistrict : '%',
+
+                        occurPolicestation: this.selected.occurPolicestation ? this.selected.occurPolicestation : '%',
+
+                        caseType: this.selected.caseType ? this.selected.caseType : '%',
+
+                        caseSubtype: this.selected.caseSubtype ? this.selected.caseSubtype : '%',
+
+                        actCode: this.selected.actCode ? this.selected.actCode : '%',
+
+                        secCode: this.selected.secCode ? this.selected.secCode : '%',
+
+                        placeTypeMaj: this.selected.placeTypeMaj ? this.selected.placeTypeMaj : '%',
+
+                        placeTypeMin: this.selected.placeTypeMin ? this.selected.placeTypeMin : '%'
+                    };
+
+                    // console.log(params)
+
+                    //107
+                    axios.get("/apis/AccusedAndVictimAgeRange", { params: params }).then((response) => {
+
+                        // console.log(response.data)
+
+                        let res = response.data[0]
+
+                        let labels = ["Accused", "Victim"];
+
+                        let datasets = [{
+                            label: 'age_19_35',
+                            data: [res['age_19_35_ACCUSED'], res['age_19_35_VICTIM']],
+                            backgroundColor: '#3e95cd'
+                        }, {
+                            label: 'age_36_50',
+                            data: [res['age_36_50_ACCUSED'], res['age_36_50_VICTIM']],
+                            backgroundColor: '#8e5ea2'
+                        }, {
+                            label: 'under_18',
+                            data: [res['under_18_ACCUSED'], res['under_18_VICTIM']],
+                            backgroundColor: '#3cba9f'
+                        }, {
+                            label: 'More_than_50',
+                            data: [res['more_than_50_ACCUSED'], res['victim_More_than_50']],
+                            backgroundColor: '#e8c3b9'
+                        }];
+
+                        if (chart107) chart107.destroy();
+
+                        chart107 = new Chart(document.getElementById("chart-107"), {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: datasets
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'ACCUSED AND VICTIM AGE RANGE'
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        stacked: true
+                                    }],
+                                    yAxes: [{
+                                        stacked: true
+                                    }]
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //108 only if ( placeTypeMaj == null && placeTypeMin == null,)
+                    axios.get("/apis/Top5MajorPlaces", { params: params }).then((response) => {
+
+                        // console.log(response.data)
+
+                        let labels = response.data.map(e => e.value.trim().concat("(", e.place_type_maj, ")"));
+
+                        let data = response.data.map(e => e.count);
+
+                        if (chart108) chart108.destroy();
+
+                        chart108 = new Chart(document.getElementById("chart-108"), {
+                            type: 'horizontalBar',
+                            data: {
+                                labels: labels,
+                                datasets: [
+                                    {
+                                        label: "Value",
+                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                        data: data
+                                    }
+                                ]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'TOP 5 MAJOR PLACES'
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //109
+                    axios.get("/apis/DaywiseCrimeCount", { params: params }).then((response) => {
+
+                        // console.log(response.data)
+
+                        let labels = response.data.map(ele => ele.days)
+
+                        let data = response.data.map(ele => ele.count)
+
+                        if (chart109) chart109.destroy();
+
+                        chart109 = new Chart(document.getElementById("chart-109"), {
+                            type: 'line',
+                            data: {
+                                labels: labels,
+                                datasets: [{
+                                    data: data,
+                                    label: "Count",
+                                    borderColor: "#3e95cd",
+                                    fill: false
+                                }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Day wise crime count'
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //110
+                    axios.get("/apis/DayTimewise", { params: params }).then((response) => {
+
+                        // console.log(response.data)
+
+                        let res = response.data[0];
+
+                        if (chart110) chart110.destroy();
+
+                        chart110 = new Chart(document.getElementById("chart-110"), {
+                            type: 'doughnut',
+                            data: {
+                                labels: Object.keys(res),
+                                datasets: [
+                                    {
+                                        label: "daywise",
+                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                        data: Object.values(res)
+                                    }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Daytime wise trends'
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //112
+                    axios.get("/apis/TopVehiclePropertyinCrime", { params: params }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp112 = response.data;
+
+                    }).catch(error => console.log(error))
+
+                    //113
+                    axios.get("/apis/TopPropertyinCrime", { params: params }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp113 = response.data;
+
+                    }).catch(error => console.log(error))
+
+                    //114
+                    axios.get("/apis/TopTargetedPropertyInCrime", { params: params }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp114 = response.data;
+
+                    }).catch(error => console.log(error))
+
+
+                    let propertyType = '%', propertyType1 = '%'
+
+                    if (this.selected.VictimPropVehicle && this.selected.VictimPropAsset) {
+
+                        propertyType = this.selected.VictimPropVehicle.concat(",", this.selected.VictimPropAsset)
+
+                    } else if (this.selected.VictimPropVehicle) {
+
+                        propertyType = this.selected.VictimPropVehicle
+
+                    } else if (this.selected.VictimPropAsset) {
+
+                        propertyType = this.selected.VictimPropAsset
+
+                    } else {
+
+                        propertyType = '%'
+                    }
+
+                    // console.log (this.selected.PropInvInCrimeVehicle, this.selected.PropInvInCrimeWeapon, this.selected.PropInvInCrimeGadget)
+
+                    if (this.selected.PropInvInCrimeVehicle || this.selected.PropInvInCrimeWeapon || this.selected.PropInvInCrimeGadget) {
+
+                        propertyType1 = '';
+
+                        if (this.selected.PropInvInCrimeVehicle) {
+
+                            propertyType1 = propertyType1.concat(this.selected.PropInvInCrimeVehicle)
+
+                        }
+
+                        if (this.selected.PropInvInCrimeWeapon) {
+
+                            if (propertyType1 == '') {
+
+                                propertyType1 = propertyType1.concat(this.selected.PropInvInCrimeWeapon)
+
+                            } else {
+
+                                propertyType1 = propertyType1.concat(",", this.selected.PropInvInCrimeWeapon)
+                            }
+                        }
+
+                        if (this.selected.PropInvInCrimeGadget) {
+
+                            if (propertyType1 == '') {
+
+                                propertyType1 = propertyType1.concat(this.selected.PropInvInCrimeGadget)
+
+                            } else {
+
+                                propertyType1 = propertyType1.concat(",", this.selected.PropInvInCrimeGadget)
+                            }
+                        }
+                    }
+
+                    let advParams = {
+
+                        ...params,
+
+                        personType: (this.selected.phyBuild || this.selected.phyComplexion || this.selected.moClass || this.selected.moSubclass) ? 4 : '%',
+
+                        phyBuild: this.selected.phyBuild ? this.selected.phyBuild : '%',
+
+                        phyComplexion: this.selected.phyComplexion ? this.selected.phyComplexion : '%',
+
+                        moClass: this.selected.moClass ? this.selected.moClass : '%',
+
+                        moSubclass: this.selected.moSubclass ? this.selected.moSubclass : '%',
+
+                        propertyStatus: (this.selected.VictimPropVehicle || this.selected.VictimPropAsset) ? 5 : '%',
+
+                        propertyType: propertyType,
+
+                        propertyStatus1: (this.selected.PropInvInCrimeVehicle || this.selected.PropInvInCrimeWeapon || this.selected.PropInvInCrimeGadget) ? 1 : '%',
+
+                        propertyType1: propertyType1
+                    }
+
+                    console.log(advParams);
+
+                    //115 only if ( placeTypeMaj == null && placeTypeMin == null,)
+                    axios.get("/apis/Top5MajorPlacesWhenAnyOneOfPropertyTypeIsSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        if (chart115) chart115.destroy();
+
+                        chart115 = new Chart(document.getElementById("chart-115"), {
+                            type: 'doughnut',
+                            data: {
+                                labels: response.data.map(e => e.value.trim()),
+                                datasets: [
+                                    {
+                                        label: "daywise",
+                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                        data: response.data.map(e => e.count)
+                                    }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Top 5 Major Places When Any One Of PropertyType Is Selected'
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //116 only if ( placeTypeMaj == null && placeTypeMin == null,)
+                    axios.get("/apis/Top5WhenBothThePropertyTypeAreSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        if (chart116) chart116.destroy();
+
+                        chart116 = new Chart(document.getElementById("chart-116"), {
+                            type: 'bar',
+                            data: {
+                                labels: response.data.map(e => e.value.trim()),
+                                datasets: [
+                                    {
+                                        label: "Count",
+                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                        data: response.data.map(e => e.count)
+                                    }
+                                ]
+                            },
+                            options: {
+                                legend: { display: false },
+                                title: {
+                                    display: true,
+                                    text: 'Top 5 When Both The PropertyType Are Selected'
+                                }
+                            }
+                        })
+
+                    }).catch(error => console.log(error))
+
+                    //117
+                    axios.get("/apis/DayWiseCountWhenAnyofthePropertyTypeSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        if (chart117) chart117.destroy();
+
+                        chart117 = new Chart(document.getElementById("chart-117"), {
+                            type: 'line',
+                            data: {
+                                labels: response.data.map(e => e.days),
+                                datasets: [{
+                                    data: response.data.map(e => e.count),
+                                    label: "Count",
+                                    borderColor: "#3e95cd",
+                                    fill: false
+                                }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Day Wise Count When Any of the Property Type Selected'
+                                }
+                            }
+                        })
+
+                    }).catch(error => console.log(error))
+
+                    //118
+                    axios.get("/apis/DaywiseCountWhenBothPropertyAreSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        if (chart118) chart118.destroy();
+
+                        chart118 = new Chart(document.getElementById("chart-118"), {
+                            type: 'line',
+                            data: {
+                                labels: response.data.map(e => e.days),
+                                datasets: [{
+                                    data: response.data.map(e => e.count),
+                                    label: "Count",
+                                    borderColor: "#c45850",
+                                    fill: false
+                                }]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Daywise Count When Both Property Are Selected'
+                                }
+                            }
+                        })
+
+                    }).catch(error => console.log(error))
+
+                    //119
+                    axios.get("/apis/DayTimeWiseWhenAnyPropertyTypeisSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+                        let res = response.data[0];
+
+                        if (chart119) chart119.destroy();
+
+                        chart119 = new Chart(document.getElementById("chart-119"), {
+                            type: 'doughnut',
+                            data: {
+                                labels: Object.keys(res),
+                                datasets: [
+                                    {
+                                        label: "daywise",
+                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                        data: Object.values(res)
+                                    }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'DayTime Wise When Any Property Type is Selected'
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //120
+                    axios.get("/apis/AdvancedWhenBothThePropertyTypeAreSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+                        let res = response.data[0];
+
+                        if (chart120) chart120.destroy();
+
+                        chart120 = new Chart(document.getElementById("chart-120"), {
+                            type: 'doughnut',
+                            data: {
+                                labels: Object.keys(res),
+                                datasets: [
+                                    {
+                                        label: "daywise",
+                                        backgroundColor: ["#3e95cd", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+                                        data: Object.values(res)
+                                    }
+                                ]
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'Advanced When Both The Property Type Are Selected'
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //121
+                    axios.get("/apis/AccusedAndVictimGenderWhenAnyOfThePropertyTypeSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp121 = response.data
+
+                    }).catch(error => console.log(error))
+
+                    //122
+                    axios.get("/apis/AdvancedAccusedandVictimGenderwhenBothPropertyTypeselected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp122 = response.data
+
+                    }).catch(error => console.log(error))
+
+                    //123
+                    axios.get("/apis/AdvancedTopVehiclePropertyinCrime", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp123 = response.data
+
+                    }).catch(error => console.log(error))
+
+                    //124
+                    axios.get("/apis/AdvancedTopPropertyinCrime", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp124 = response.data
+
+                    }).catch(error => console.log(error))
+
+                    //125
+                    axios.get("/apis/AdvancedTopTargetedPropertyInCrime", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        this.responses.resp125 = response.data
+
+                    }).catch(error => console.log(error))
+
+                    //126
+                    axios.get("/apis/AdvancedAccusedAndVictimAgeRangeWhenOnePropertyisSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        let res = response.data[0]
+
+                        let labels = ["Accused", "Victim"];
+
+                        let datasets = [{
+                            label: 'age_19_35',
+                            data: [res['age_19_35_ACCUSED'], res['age_19_35_VICTIM']],
+                            backgroundColor: '#3e95cd'
+                        }, {
+                            label: 'age_36_50',
+                            data: [res['age_36_50_ACCUSED'], res['age_36_50_VICTIM']],
+                            backgroundColor: '#8e5ea2'
+                        }, {
+                            label: 'under_18',
+                            data: [res['under_18_ACCUSED'], res['under_18_VICTIM']],
+                            backgroundColor: '#3cba9f'
+                        }, {
+                            label: 'More_than_50',
+                            data: [res['more_than_50_ACCUSED'], res['victim_More_than_50']],
+                            backgroundColor: '#e8c3b9'
+                        }];
+
+                        if (chart126) chart126.destroy();
+
+                        chart126 = new Chart(document.getElementById("chart-126"), {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: datasets
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'ACCUSED AGE RANGE WHEN ACCUSED ATTRIBUTES AND ONE OF THE PROPERTY ARE SELECTED'
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        stacked: true
+                                    }],
+                                    yAxes: [{
+                                        stacked: true
+                                    }]
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+
+                    //127
+                    axios.get("/apis/AdvancedAccusedAndVictimAgeRangeWhenBothPropertyareSelected", { params: advParams }).then((response) => {
+
+                        // console.log(response.data)
+
+                        let res = response.data[0]
+
+                        let labels = ["Accused", "Victim"];
+
+                        let datasets = [{
+                            label: 'age_19_35',
+                            data: [res['age_19_35_ACCUSED'], res['age_19_35_VICTIM']],
+                            backgroundColor: '#3e95cd'
+                        }, {
+                            label: 'age_36_50',
+                            data: [res['age_36_50_ACCUSED'], res['age_36_50_VICTIM']],
+                            backgroundColor: '#8e5ea2'
+                        }, {
+                            label: 'under_18',
+                            data: [res['under_18_ACCUSED'], res['under_18_VICTIM']],
+                            backgroundColor: '#3cba9f'
+                        }, {
+                            label: 'More_than_50',
+                            data: [res['more_than_50_ACCUSED'], res['victim_More_than_50']],
+                            backgroundColor: '#e8c3b9'
+                        }];
+
+                        if (chart127) chart127.destroy();
+
+                        chart127 = new Chart(document.getElementById("chart-127"), {
+                            type: 'bar',
+                            data: {
+                                labels: labels,
+                                datasets: datasets
+                            },
+                            options: {
+                                title: {
+                                    display: true,
+                                    text: 'ACCUSED AGE RANGE WHEN BOTH THE PROPERTY TYPE ARE SELECTED'
+                                },
+                                scales: {
+                                    xAxes: [{
+                                        stacked: true
+                                    }],
+                                    yAxes: [{
+                                        stacked: true
+                                    }]
+                                }
+                            }
+                        });
+
+                    }).catch(error => console.log(error))
+                }
+            },
+            beforeMount: function () {
+
+                this.initialize()
+            }
+        })
+    </script>
+</body>
+
+</html>

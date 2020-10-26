@@ -6,7 +6,7 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs'); 
 
 app.get('/crime_trends', (req, res) => {
-    res.render('crime_trends')
+    res.render('crime_trends1')
 });
 
 app.get ("/charts", (req, res) => {
@@ -97,7 +97,7 @@ app.get("/apis/CrimeinVillageCountforlast2year", function ( req, res ){
 //params { caseType }
 app.get("/apis/subCaseTypeforcaseType", function ( req, res ){
 
-    console.log ( req.query );
+    // console.log ( req.query );
 
     res.json([{"subCaseType":"NARCOTIC SUBSTANCES","code":24},{"subCaseType":"SPURIOUS LIQUOR","code":48},{"subCaseType":"MADHUKASHAYAM","code":39},{"subCaseType":"FERMENTED WASH","code":38},{"subCaseType":"TODDY","code":37},{"subCaseType":"RECTIFIED SPIRIT","code":36},{"subCaseType":"ID ARRACK","code":22},{"subCaseType":"IMFL BOTTLES","code":23}]);
 });
@@ -108,7 +108,7 @@ app.get("/apis/DistrictNameList", function ( req, res ){
 
 //params { district }
 app.get("/apis/PoliceStation", function ( req, res ){
-    console.log ( req.query );
+    // console.log ( req.query );
     res.json([{"name":"ARMED RESERVE","code":"00"},{"name":"ARAVAKURICHI","code":"03"},{"name":"CHINNADHARAPURAM","code":"10"},{"name":"CHINTHAMANIPATTY","code":"11"},{"name":"AWPS-KARUR","code":"16"},{"name":"KARUR TOWN","code":"42"},{"name":"K.PARAMATHI","code":"43"},{"name":"KULITHALAI","code":"44"},{"name":"LALAPET","code":"46"},{"name":"MAYANOOR","code":"49"},{"name":"PALAVIDUTHI","code":"62"},{"name":"PASUPATHIPALAYAM","code":"63"},{"name":"THANTHONIMALAI","code":"65"},{"name":"PEW-KARUR","code":"70"},{"name":"PEW-KULITHALAI","code":"71"},{"name":"PEW-ARAVAKURICHI","code":"72"},{"name":"THENNILAI","code":"76"},{"name":"THOGAMALAI","code":"77"},{"name":"TRAFFIC - KARUR TOWN","code":"78"},{"name":"TRAFFIC – PASUPATHIPALAYAM","code":"79"},{"name":"DISTRICT SPECIAL BRANCH","code":"80"},{"name":"VANGAL","code":"84"},{"name":"VELAYUTHAMPALAYAM","code":"85"},{"name":"VELLIYANAI","code":"86"},{"name":"VENGAMEDU","code":"87"},{"name":"AWPS-KULITHALAI","code":"90"},{"name":"MOBILE FORENSIC LAB","code":"91"},{"name":"SINGLE DIGIT FPB","code":"92"},{"name":"ALGSC","code":"95"},{"name":"AHTU","code":"96"},{"name":"DCB","code":"99"}]);
 });
 
@@ -118,7 +118,7 @@ app.get("/apis/placeTypeMajor", function ( req, res ){
 
 //params { placetypemajor }
 app.get("/apis/placeTypeMinor", function ( req, res ){
-    console.log ( req.query );
+    // console.log ( req.query );
     res.json([{"place_id":"001","value":"AEROPLANE                                                                  "},{"place_id":"002","value":"AIR CARGO COMPLEX                                                          "},{"place_id":"003","value":"AIRPORT                                                                    "},{"place_id":"004","value":"APRON                                                                      "},{"place_id":"005","value":"ARRIVAL LOUNGE                                                             "},{"place_id":"006","value":"BAGGAGE HANDLING AREA                                                      "},{"place_id":"007","value":"DEPARTURE LOUNGE                                                           "},{"place_id":"008","value":"HANGAR                                                                     "},{"place_id":"009","value":"RUNWAY                                                                     "},{"place_id":"010","value":"TARMAC                                                                     "},{"place_id":"011","value":"TECHNICAL AREA                                                             "}]);
 });
 
@@ -164,7 +164,7 @@ app.get("/apis/PropInvInCrimeGadget", function ( req, res ){
 
 //107
 app.get ( "/apis/AccusedAndVictimAgeRange", function(req, res){
-    console.log ( req.query )
+    // console.log ( req.query )
     res.json ([{"under_18_ACCUSED":0,"age_19_35_ACCUSED":60,"age_36_50_ACCUSED":137,"more_than_50_ACCUSED":164,"under_18_VICTIM":8,"age_19_35_VICTIM":20,"age_36_50_VICTIM":12,"victim_More_than_50":16}])
 })
 
@@ -190,11 +190,14 @@ app.get ( "/apis/TopPropertyinCrime", function(req, res){
     res.json ([{"count":8,"property":"PASS BOOK                                                                  "}])
 })
 
+//114
 app.get ( "/apis/TopTargetedPropertyInCrime", function(req, res){
     res.json ([{"count":2,"property":"BATTERY                                                                    "}])
 })
 
+//115
 app.get ( "/apis/Top5MajorPlacesWhenAnyOneOfPropertyTypeIsSelected", function(req, res){
+    console.log ( req.query )
     res.json ([{"count":31,"place_type_maj":"015","value":"ROADWAYS                                                                   "},{"count":6,"place_type_maj":"009","value":"PUBLIC PLACE                                                            "},{"count":6,"place_type_maj":"013","value":"RESIDENTIAL PREMISES                                                       "},{"count":5,"place_type_maj":"002","value":"COMMERCIAL ESTABLISHMENT                                                             "}])
 })
 
