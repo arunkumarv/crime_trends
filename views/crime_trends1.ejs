@@ -793,7 +793,11 @@
 
                     console.log(e.target.value)
 
-                    this.loadPoliceStations(e.target.value)
+                    let distName = this.responses.DistrictNameList.filter ( el => el.code == e.target.value )[0]['districtname']
+
+                    console.log ( distName )
+
+                    this.loadPoliceStations(distName)
                 },
 
                 loadPoliceStations: function (district) {

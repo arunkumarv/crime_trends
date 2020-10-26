@@ -323,7 +323,7 @@
                   <div class="col">
                     <label for="">District:</label>
                     <select v-model="selected.occurDistrict" @change="onDistrictChange($event)" class="form-control">
-                      <option v-for="ele in responses.DistrictNameList" v-bind:value="ele.districtname">
+                      <option v-for="ele in responses.DistrictNameList" v-bind:value="ele.code">
                         {{ele.districtname}}({{ele.code}})</option>
                     </select>
                   </div>
@@ -331,7 +331,7 @@
                     <label for="">Police Station</label>
                     <select :disabled="responses.PoliceStation==null" v-model="selected.occurPolicestation"
                       @change="onPoliceStationChange($event)" class="form-control">
-                      <option v-for="ele in responses.PoliceStation" v-bind:value="ele.name">
+                      <option v-for="ele in responses.PoliceStation" v-bind:value="ele.code">
                         {{ele.name}}({{ele.code}})</option>
                     </select>
                   </div>
