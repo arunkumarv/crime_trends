@@ -853,9 +853,9 @@
 
                     let params = {
 
-                        fromDate: this.selected.fromDate ? this.selected.fromDate : '%',
+                        fromDate: this.selected.fromDate ? this.selected.fromDate.replace(/-/g, "") : '%',
 
-                        toDate: this.selected.toDate ? this.selected.toDate : '%',
+                        toDate: this.selected.toDate ? this.selected.toDate.replace(/-/g, "") : '%',
 
                         occurDistrict: this.selected.occurDistrict ? this.selected.occurDistrict : '%',
 
